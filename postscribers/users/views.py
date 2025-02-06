@@ -3,24 +3,27 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import logout
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import SignUpForm
+
 def sign_up(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            # If you don't need to modify the instance before saving:
-            form.save()
-            # Or, if you need to modify before saving:
-            # user = form.save(commit=False)
-            # user.some_field = 'some_value'
-            # user.save()
-            return redirect('blog-index')
+            # Save the user
+            user = form.save()
+            
+            # Optionally, log the user in immediately
+            login(request, user)
+            
+            # Redirect to the homepage (or any other page)
+            return redirect('blog-index')  # 'homepage' should match the name in your URL config.
     else:
         form = SignUpForm()
-        
-    context = {
-        'form': form,
-    }
-    return render(request, 'users/sign_up.html', context)
+    
+    return render(request, 'users/sign_up.html', {'form': form})
+
 
 def logout_view(request):
     """A customised logout page"""
