@@ -6,6 +6,7 @@ from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import SignUpForm
+from django.contrib.auth.decorators import login_required
 
 def sign_up(request):
     if request.method == "POST":
@@ -29,7 +30,7 @@ def logout_view(request):
     """A customised logout page"""
     logout(request)
     return render(request, 'users/logout.html')
-
+@login_required
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
