@@ -5,3 +5,11 @@ class PostModelForm(forms.ModelForm):
     class Meta:
         model = Postmodel
         fields = ('title','content')
+
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Postmodel
+        fields = ('title','content')
+        widgets = {
+            'content': forms.Textarea(attrs={'rows':4})
+        }
